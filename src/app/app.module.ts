@@ -22,7 +22,6 @@ import { MapCanvasComponent } from './map/map-canvas/map-canvas.component';
 import { AddSettlementComponent } from './modal/add-settlement/add-settlement.component'; 
 import { ModalComponent } from './modal/modal.component';
 import { PeopleComponent } from './people/people.component';
-import { CavesComponent } from './people/caves/caves.component'; 
 
 import { MatFormFieldModule } from '@angular/material/form-field'; 
 import { MatInputModule } from '@angular/material/input';
@@ -34,6 +33,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { JsonModelerComponent } from './people/json-modeler/json-modeler.component';
 
 
 @NgModule({
@@ -51,7 +51,7 @@ import { MatIconModule } from '@angular/material/icon';
     MapCanvasComponent,
     AddSettlementComponent,
     PeopleComponent,
-    CavesComponent,
+    JsonModelerComponent,
   ],
   imports: [
     BrowserModule,
