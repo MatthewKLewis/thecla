@@ -1,0 +1,6 @@
+<nav color="accent" *ngIf="!authService.isExpired()">
+    <button routerLink="dashboard">Dashboard</button>
+    <p *ngIf="authService.user"><span>Signed in as </span>{{authService.user.email}}</p>
+    <p *ngIf="authService.user"><span>Last Login </span>{{authService.user.lastLogin}}</p>
+    <button (click)="authService.logout()">Log Out</button>
+</nav>

@@ -1,0 +1,27 @@
+
+@import '../../styles.scss';
+
+table {
+    width: 100%;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .button-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        button {
+            background-color: $base-color;
+            color: white;
+            padding: 1em;
+            margin: 1em;
+        } button:hover { background-color: $base-color-tint;}
+    }
+}
+
+.row:hover { background-color: #333; }

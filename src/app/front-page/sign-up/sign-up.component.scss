@@ -1,0 +1,18 @@
+h1 {
+    font-family: consolas, monospace, sans-serif;
+}
+
+.wrapper {
+    margin: 1em;
+    padding: 1em;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+br {
+    margin: 1em;
+}

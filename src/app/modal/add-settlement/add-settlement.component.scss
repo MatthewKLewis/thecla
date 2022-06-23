@@ -1,0 +1,19 @@
+@import '../../../styles.scss';
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+button {
+    background-color: $base-color;
+    color: white;
+    padding: 1em;
+    margin: 1em;
+} button:hover { background-color: $base-color-tint;}
+
+.random-icon {
+    position: absolute;
+    right: 1em;
+    bottom: 0.5em;
+}

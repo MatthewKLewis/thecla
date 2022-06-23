@@ -1,0 +1,23 @@
+<div class="wrapper">
+    <h1>Sign Up</h1>
+    <form class="form" [formGroup]="signUpForm">
+            <mat-form-field>
+                <mat-label>Username</mat-label>
+                <input matInput formControlName="username">
+            </mat-form-field>
+    
+            <mat-form-field>
+                <mat-label>Password</mat-label>
+                <input type="password" matInput formControlName="password">
+            </mat-form-field>
+    
+            <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email">
+            </mat-form-field>
+
+            <br>
+            
+            <button mat-flat-button type="submit" (click)="signUp()">Submit</button>
+    </form> 
+</div>
