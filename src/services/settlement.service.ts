@@ -8,13 +8,12 @@ export interface MapRenderBounds {
   east: number,
   west: number,
   resolution: number,
+  regionID: number,
 }
 
 export interface Settlement {
-  ID: number,
   Name: string,
   RegionID: number,
-  UserID: number,
   Description: string,
   X: number,
   Y: number,
@@ -39,7 +38,7 @@ export class SettlementService {
 
   constructor(private http: HttpClient) { }
 
-  addSettlement(settlement: any) {
+  addSettlement(settlement: Settlement) {
     this.http.post('http://localhost:8080/api/settlements/add', settlement).subscribe((res:any)=>{
       this.getAllSettlements();
     });

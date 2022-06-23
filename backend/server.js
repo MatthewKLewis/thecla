@@ -49,7 +49,7 @@ app.use("/api/random", require("./routes/randomRoutes"));
 app.get('*.*', express.static(`${__dirname}/dist/thecla`, {maxAge: '1y'}));
 app.all('*', function (req, res) {res.status(200).sendFile(`/`, {root: `${__dirname}/dist/thecla`});});
 
-app.set("port", process.env.PORT || 8080);
+app.set("port", process.env.PORT || 6666);
 app.listen(app.get('port'), () => {
   console.log(`Listening on Port ${app.get('port')}`);
 });

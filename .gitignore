@@ -3,10 +3,11 @@
 # Compiled output
 /backend/dist
 /backend/env
+/backend/.env
 /tmp
 /out-tsc
 /bazel-out
-/src/assets/map
+/src/assets/maps
 
 # Node
 /node_modules

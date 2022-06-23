@@ -27,6 +27,8 @@ import { RandomService } from 'src/services/random.service';
 })
 export class AddSettlementComponent implements AfterViewInit {
 
+  @Input() input: any;
+
   addSettlementForm!: FormGroup;
 
   constructor(private fb: FormBuilder, public dialogRef: MatDialogRef<any>, public randomService: RandomService) { 
@@ -43,7 +45,7 @@ export class AddSettlementComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    
+    console.log(this.input)
   }
 
   close() {

@@ -1,9 +1,9 @@
 <div class="wrapper">
-    <div class="console">
-        <button>Button 1</button>
-        <button>Button 1</button>
-        <button>Button 1</button>
-        <button>Button 1</button>
-    </div>
-    <app-map-canvas></app-map-canvas>
+    <img 
+        *ngFor="let map of maps"
+        class="map-tile" 
+        [src]="'../../assets/maps/' + map + '/TileGroup0/0-0-0.jpg'" 
+        [routerLink]="'canvas/' + map"
+        [alt]="'Map ' + map"
+    >
 </div>

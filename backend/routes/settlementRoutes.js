@@ -35,6 +35,7 @@ router.post("/renderable", auth, (req, res) => {
     sp.input('southBound', sql.Float, req.body.south);
     sp.input('eastBound', sql.Float, req.body.east);
     sp.input('westBound', sql.Float, req.body.west);
+    sp.input('regionID', sql.Int, req.body.regionID);
     sp.execute('sp_GetSettlementsToRender').then(function (sqlReturn, err) {
         res.json(sqlReturn);
     });

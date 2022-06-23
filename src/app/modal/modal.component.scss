@@ -1,3 +1,5 @@
+@import '../../styles.scss';
+
 ::ng-deep mat-dialog-container {
-    background-color: #555 !important;
+    background-color: $background-tint !important;
 }

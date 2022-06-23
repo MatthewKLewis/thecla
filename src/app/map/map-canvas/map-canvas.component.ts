@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import View from 'ol/View';
 import TileLayer from 'ol/layer/Tile';
 import { defaults } from 'ol/interaction';
-import { Map as OlMap } from 'ol/';
+import { Map as OlMap, Overlay } from 'ol/';
 import { MousePosition } from 'ol/control';
 import { defaults as defaultControls } from 'ol/control';
 import { Zoomify } from 'ol/source';
@@ -11,10 +11,18 @@ import { MapRenderBounds, SettlementService } from 'src/services/settlement.serv
 import VectorLayer from 'ol/layer/Vector';
 import { MapStyleService } from 'src/services/map-style.service';
 import VectorSource from 'ol/source/Vector';
+import { ActivatedRoute } from '@angular/router';
+import { ModalComponent } from '@app/modal/modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 const imgWidth = 8000;
 const imgHeight = 8000;
-const FRAME_BUFFER = 20;
+const FRAME_BUFFER = 500;
+
+enum PanelMode {
+  Default,
+  AddSettlement,
+}
 
 @Component({
   selector: 'app-map-canvas',
@@ -24,13 +32,23 @@ const FRAME_BUFFER = 20;
 export class MapCanvasComponent implements AfterViewInit {
 
   @ViewChild('map') mapElement!: any;
+  @ViewChild('popup') popupElement!: any;
+
+  regionID: number;
   map!: OlMap
+  popup!: Overlay
   tileLayer!: TileLayer<Zoomify>;
   featureLayer: any;
   isLoading: boolean = true;
   mapRenderBounds!: MapRenderBounds;
 
-  constructor(public settlementService: SettlementService, public mapStyleService: MapStyleService) { }
+  constructor(public settlementService: SettlementService,
+    public mapStyleService: MapStyleService,
+    private route: ActivatedRoute,
+    public dialog: MatDialog
+  ) {
+    this.regionID = Number(this.route.snapshot.paramMap.get('id')) || 0;
+  }
 
   ngAfterViewInit(): void {
     this.drawMap();
@@ -42,7 +60,7 @@ export class MapCanvasComponent implements AfterViewInit {
   drawMap() {
     this.isLoading = true;
     const tileSource = new Zoomify({
-      url: `../../../assets/map/map/`,
+      url: `../../../assets/maps/${this.regionID}/`,
       size: [imgWidth, imgHeight],
     });
     const tileGrid = tileSource.getTileGrid();
@@ -51,6 +69,10 @@ export class MapCanvasComponent implements AfterViewInit {
     this.tileLayer = new TileLayer({ source: tileSource });
     this.featureLayer = new VectorLayer({});
 
+    this.popup = new Overlay({
+      element: this.popupElement.nativeElement,
+    });
+
     this.map = new OlMap({
       layers: [this.tileLayer, this.featureLayer],
       target: 'map',
@@ -58,6 +80,8 @@ export class MapCanvasComponent implements AfterViewInit {
         extent: extent,
         constrainOnlyCenter: true,
       }),
+      
+      overlays: [this.popup],
       interactions: defaults({ doubleClickZoom: false }),
       controls: defaultControls().extend([new MousePosition({ coordinateFormat: createStringXY(1) })]),
     });
@@ -65,6 +89,7 @@ export class MapCanvasComponent implements AfterViewInit {
 
     // CLICK
     this.map.on('click', (event: any) => {
+      this.popup.setPosition(undefined);
       var feature = this.map.forEachFeatureAtPixel(event.pixel, (feature: any) => {
         return feature;
       });
@@ -75,6 +100,7 @@ export class MapCanvasComponent implements AfterViewInit {
 
     this.map.on('dblclick', (event: any) => {
       console.log("add settlement here?")
+      this.popup.setPosition(event.coordinate);
     });
 
     // MOVE
@@ -84,7 +110,7 @@ export class MapCanvasComponent implements AfterViewInit {
       var frameWidth = event.target.viewport_.clientWidth; //width of the frame in browser pixels
       var frameHeight = event.target.viewport_.clientHeight; //height of the frame in browser pixels
       var visibleFrame = [frameWidth * rez, frameHeight * rez] //frame X,Y dimensions in map pixels
-      var fC: MapRenderBounds = { north: 0, south: 0, east: 0, west: 0, resolution: rez } //NW, NE, SE, SW
+      var fC: MapRenderBounds = { north: 0, south: 0, east: 0, west: 0, resolution: rez, regionID: this.regionID } //NW, NE, SE, SW
       fC.north = frameCenter[1] + (visibleFrame[1] / 2) - FRAME_BUFFER;
       fC.south = frameCenter[1] - (visibleFrame[1] / 2) + FRAME_BUFFER;
       fC.east = frameCenter[0] + (visibleFrame[0] / 2) - FRAME_BUFFER;
@@ -101,10 +127,41 @@ export class MapCanvasComponent implements AfterViewInit {
 
   redrawFeatures(settlements: any[]) {
     var feats: any[] = []
-    settlements.forEach((settlement: any)=>{
+    settlements.forEach((settlement: any) => {
       feats.push(this.mapStyleService.createIconFeature(settlement));
     })
-    this.featureLayer.setSource(new VectorSource({features: feats}))
+    this.featureLayer.setSource(new VectorSource({ features: feats }))
+  }
+
+  //Dialog Based:
+  openDialog(viewString: string, input: any, callBack: Function) {
+    const dialogRef = this.dialog.open(ModalComponent, {
+      data: { view: viewString, input: input },
+      height: '60%',
+      width: '60%',
+    });
+    dialogRef.afterClosed().subscribe((result: any) => { callBack(result) });
+  }
+
+  addSettlement() {
+    this.openDialog('add-settlement', {}, (res:any)=>{
+      console.log(res);
+      if (res) {
+        var x: number = 0, y: number = 0;
+        var coords = this.popup.getPosition();
+        if (coords) {var x = coords[0] || 0; var y = coords[1] || 0;}
+        this.settlementService.addSettlement({
+          Name: res.Name,
+          X: x,
+          Y: y,
+          RegionID: this.regionID,
+          Description: res.Description,
+        })
+        this.popup.setPosition(undefined)
+      } else {
+        console.log("user cancelled interaction");
+      }
+    })
   }
 
 }
