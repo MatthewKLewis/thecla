@@ -19,17 +19,18 @@ export class MapStyleService {
   createIconFeature(feature: Settlement) {
     var tempFeature = new Feature({
       geometry: new Point([
-        feature.X,
-        feature.Y,
+        feature.x,
+        feature.y,
       ]),
+      displayAtResolution: feature.displayAtResolution,
     });
     tempFeature.setStyle(new Style({
-      text: new Text({ text: feature.Name }),
+      text: new Text({ text: feature.name }),
       image: new Icon({
         anchor: [0.5, 0.5],
         anchorXUnits: IconAnchorUnits.FRACTION,
         anchorYUnits: IconAnchorUnits.FRACTION,
-        src: '../assets/icons/whiteDot.png',
+        src: '../assets/icons/castle.png',
         color: '#fff'
       }),
     }));

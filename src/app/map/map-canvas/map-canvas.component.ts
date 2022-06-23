@@ -17,12 +17,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 const imgWidth = 8000;
 const imgHeight = 8000;
-const FRAME_BUFFER = 500;
-
-enum PanelMode {
-  Default,
-  AddSettlement,
-}
+const FRAME_BUFFER = 10;
 
 @Component({
   selector: 'app-map-canvas',
@@ -99,7 +94,6 @@ export class MapCanvasComponent implements AfterViewInit {
     });
 
     this.map.on('dblclick', (event: any) => {
-      console.log("add settlement here?")
       this.popup.setPosition(event.coordinate);
     });
 
@@ -115,8 +109,8 @@ export class MapCanvasComponent implements AfterViewInit {
       fC.south = frameCenter[1] - (visibleFrame[1] / 2) + FRAME_BUFFER;
       fC.east = frameCenter[0] + (visibleFrame[0] / 2) - FRAME_BUFFER;
       fC.west = frameCenter[0] - (visibleFrame[0] / 2) + FRAME_BUFFER;
-      this.mapRenderBounds = fC;
-      this.settlementService.getSettlementsToRender(this.mapRenderBounds);
+      this.settlementService.mapRenderBounds = fC;
+      this.settlementService.getSettlementsToRender();
     });
 
     // DRAG
@@ -145,17 +139,16 @@ export class MapCanvasComponent implements AfterViewInit {
 
   addSettlement() {
     this.openDialog('add-settlement', {}, (res:any)=>{
-      console.log(res);
       if (res) {
         var x: number = 0, y: number = 0;
         var coords = this.popup.getPosition();
         if (coords) {var x = coords[0] || 0; var y = coords[1] || 0;}
         this.settlementService.addSettlement({
-          Name: res.Name,
-          X: x,
-          Y: y,
-          RegionID: this.regionID,
-          Description: res.Description,
+          name: res.Name,
+          x: x,
+          y: y,
+          regionID: this.regionID,
+          description: res.Description,
         })
         this.popup.setPosition(undefined)
       } else {

@@ -12,7 +12,7 @@ import { ModalComponent } from '../modal/modal.component';
 })
 export class SettlementsComponent implements OnInit {
 
-  displayedColumns: string[] = ['ID', 'Name', 'Description']
+  displayedColumns: string[] = ['ID', 'Name', 'Description', 'Location']
   pageEvent!: PageEvent;
   dataSource!: DataSource<any>;
 
@@ -42,13 +42,14 @@ export class SettlementsComponent implements OnInit {
   }
   
   editSettlement(row: any) {
-    console.log(row);
+    //console.log(row);
     this.openDialog('edit-settlement', {}, (res:any)=>{
-      console.log(res);
+      //console.log(res);
     })
   }
   
   deleteSettlement() {
+    //console.log(row);
     this.openDialog('delete-settlement', {}, (res:any)=>{
       //console.log(res);
     })

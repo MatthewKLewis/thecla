@@ -45,7 +45,6 @@ export class AddSettlementComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    console.log(this.input)
   }
 
   close() {

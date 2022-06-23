@@ -52,12 +52,12 @@ router.post("/login", (req, res, next) => {
                     res.json({
                         success: true,
                         msg: "log in success",
-                        token: jwt.sign({ID: user.ID, Name: user.Name}, process.env.TOKEN_SECRET, { expiresIn: 2400, }),
+                        token: jwt.sign({id: user.id, name: user.name}, process.env.TOKEN_SECRET, { expiresIn: 86400, }),
                         user: {
-                            id: user.ID,
-                            username: user.Name,
-                            email: user.Email,
-                            lastLogin: user.LastLogIn
+                            id: user.id,
+                            username: user.name,
+                            email: user.email,
+                            lastLogin: user.lastLogin
                         },
                     });
                 } else { res.status(400).send("Password Incorrect") }

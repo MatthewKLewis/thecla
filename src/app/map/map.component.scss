@@ -3,16 +3,26 @@
 .wrapper {
     margin: 0 auto;
     display: grid;
-    grid-template-rows: repeat(5, auto);
     grid-template-columns: repeat(5, auto);
-    place-items: center;
+    grid-gap: 1em;
 
     .map-tile {
         border: 2px solid $base-color;
-        width: 12em;
-        height: 12em;
         background-color: $background-tint;
         display: grid;
         place-items: center;
+        overflow: hidden;
+        img {
+            width: 100%;
+            height: 100%;
+        }
+        span {
+            position: relative;
+            bottom: 2em;
+            width: 100%;
+            height: 0;
+            text-align: center;
+            font-size: 1.5em;
+        }
     }
 }

@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MapComponent implements OnInit {
 
-  maps: any[] = ['1',];
+  maps: any[] = ['1','1','1','1','1'];
 
   constructor() { }
 

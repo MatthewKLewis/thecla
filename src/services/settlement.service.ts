@@ -12,17 +12,29 @@ export interface MapRenderBounds {
 }
 
 export interface Settlement {
-  Name: string,
-  RegionID: number,
-  Description: string,
-  X: number,
-  Y: number,
+  name: string,
+  regionID: number,
+  description: string,
+  x: number,
+  y: number,
+  
+  displayAtResolution?: number,
+  userID?: number
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class SettlementService {
+
+  mapRenderBounds: MapRenderBounds = {
+    north: 0,
+    south: 0,
+    east: 0,
+    west: 0,
+    resolution: 0,
+    regionID: 0,
+  }
 
   page: any = {
     "searchTerm": '',
@@ -40,7 +52,7 @@ export class SettlementService {
 
   addSettlement(settlement: Settlement) {
     this.http.post('http://localhost:8080/api/settlements/add', settlement).subscribe((res:any)=>{
-      this.getAllSettlements();
+      this.getSettlementsToRender();
     });
   }
 
@@ -51,8 +63,8 @@ export class SettlementService {
     });
   }
 
-  getSettlementsToRender(bounds: MapRenderBounds) {
-    return this.http.post('http://localhost:8080/api/settlements/renderable', bounds).subscribe((res:any)=>{
+  getSettlementsToRender() {
+    return this.http.post('http://localhost:8080/api/settlements/renderable', this.mapRenderBounds).subscribe((res:any)=>{
       this.renderableSettlements$.next(res.recordset)
     });
   }

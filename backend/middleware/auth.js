@@ -2,16 +2,21 @@ const jwt = require("jsonwebtoken");
 
 const verifyToken = (req, res, next) => {
     const token = req.headers.authorization.substring(7);
-    if (!token) {
+    if (!token || token == null) {
         return res.status(403).send("A token is required for authentication");
     }
-    const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
-    if (decoded) {
-        req.user = decoded
-        return next();
+    try {
+        const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+        if (decoded) {
+            req.user = decoded
+            return next();
+        }
+        else {
+            return res.status(401).send("Invalid Token");
+        }
     }
-    else {
-        return res.status(401).send("Invalid Token");
+    catch {
+        return res.status(403).send("Token error");
     }
 };
 

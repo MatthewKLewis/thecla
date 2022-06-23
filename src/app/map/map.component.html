@@ -1,9 +1,10 @@
 <div class="wrapper">
-    <img 
-        *ngFor="let map of maps"
-        class="map-tile" 
+    <div class="map-tile" *ngFor="let map of maps">
+        <img 
         [src]="'../../assets/maps/' + map + '/TileGroup0/0-0-0.jpg'" 
         [routerLink]="'canvas/' + map"
         [alt]="'Map ' + map"
-    >
+        >
+        <span>Map {{map}}</span>
+    </div>
 </div>
