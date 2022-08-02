@@ -149,6 +149,7 @@ export class MapCanvasComponent implements AfterViewInit {
           y: y,
           regionID: this.regionID,
           description: res.Description,
+          displayAtResolution: 5,
         })
         this.popup.setPosition(undefined)
       } else {

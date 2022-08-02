@@ -54,6 +54,7 @@ router.post("/add", auth, (req, res) => {
     sp.input('regionID', sql.Int, req.body.regionID);
     sp.input('name', sql.NVarChar, req.body.name);
     sp.input('description', sql.NVarChar, req.body.description);
+    sp.input('displayAtResolution', sql.Int, req.body.displayAtResolution);
     sp.execute('sp_CreateSettlement').then(function (sqlReturn, err) {
         //console.log(sqlReturn)
         res.json(sqlReturn);
